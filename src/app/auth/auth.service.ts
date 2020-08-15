@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
-interface AuthResponseData {
+export interface AuthResponseData {
   idToken: string;
   email: string;
   refreshToken: string;
   expiresIn: string;
   localId: string;
+  registered?: boolean;
 }
 
 @Injectable({providedIn: 'root'})
@@ -37,5 +38,13 @@ export class AuthService {
     }));
   }
 
- 
+ login(email: string, password: string) {
+    // tslint:disable-next-line:max-line-length
+    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCWq_2qULObFwaF8r8w41NgM_u5bq8HAFk', {
+      email,
+      password,
+      returnSecureToken: true
+      }
+    );
+  }
 }
